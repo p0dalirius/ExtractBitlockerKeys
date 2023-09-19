@@ -69,3 +69,10 @@ Credentials:
   --aes-key hex key     AES key to use for Kerberos Authentication (128 or 256 bits)
   -k, --kerberos        Use Kerberos authentication. Grabs credentials from .ccache file (KRB5CCNAME) based on target parameters. If valid credentials cannot be found, it will use the ones specified in the command line.
 ```
+
+## References
+
+ - https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-keypackage
+ - https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoveryguid
+ - https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoverypassword
+ - https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-volumeguid
