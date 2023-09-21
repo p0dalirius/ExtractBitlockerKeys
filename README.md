@@ -3,7 +3,7 @@
 <p align="center">
     A post-exploitation python script to automatically extract the bitlocker recovery keys from a domain.
     <br>
-    <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/p0dalirius/FindUncommonShares">
+    <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/p0dalirius/ExtractBitlockerKeys">
     <a href="https://twitter.com/intent/follow?screen_name=podalirius_" title="Follow"><img src="https://img.shields.io/twitter/follow/podalirius_?label=Podalirius&style=social"></a>
     <a href="https://www.youtube.com/c/Podalirius_?sub_confirmation=1" title="Subscribe"><img alt="YouTube Channel Subscribers" src="https://img.shields.io/youtube/channel/subscribers/UCF_x5O7CSfr82AfNVTKOv_A?style=social"></a>
     <br>
@@ -82,3 +82,10 @@ Credentials:
   --aes-key hex key     AES key to use for Kerberos Authentication (128 or 256 bits)
   -k, --kerberos        Use Kerberos authentication. Grabs credentials from .ccache file (KRB5CCNAME) based on target parameters. If valid credentials cannot be found, it will use the ones specified in the command line.
 ```
+
+## References
+
+ - https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-keypackage
+ - https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoveryguid
+ - https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoverypassword
+ - https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-volumeguid
