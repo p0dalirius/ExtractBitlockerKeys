@@ -6,10 +6,8 @@
 
 
 import argparse
-from concurrent.futures import ThreadPoolExecutor
 from sectools.windows.ldap import raw_ldap_query, init_ldap_session
 from sectools.windows.crypto import nt_hash, parse_lm_nt_hashes
-import threading
 import os
 import sys
 import sqlite3

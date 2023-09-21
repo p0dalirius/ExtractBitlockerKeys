@@ -18,7 +18,7 @@
  - [x] Export results in SQLITE3 with Computer FQDN, Domain, Recovery Key, Volume GUID, Created At and Organizational Units with `--export-sqlite <file.db>`.
  - [x] Iterate on LDAP result pages to get every computer of the domain, no matter the size.
 
-## Demonstration
+## Demonstration from Linux in Python
 
 To extract Bitlocker recovery keys from all the computers of the domain `domain.local` you can use this command:
 
@@ -28,7 +28,20 @@ To extract Bitlocker recovery keys from all the computers of the domain `domain.
 
 You will get the following output:
 
-![](./.github/example.png)
+![](./.github/example_python.png)
+
+## Demonstration from Windows in Powershell
+
+To extract Bitlocker recovery keys from all the computers of the domain `domain.local` you can use this command:
+
+```
+.\ExtractBitlockerKeys.ps1 -dcip 192.168.1.101 -Username 'Administrator' -Password 'Podalirius123!' -ExportToCSV ./keys.csv -ExportToJSON ./keys.json
+```
+
+You will get the following output:
+
+![](./.github/example_powershell.png)
+
 
 ## Usage
 
