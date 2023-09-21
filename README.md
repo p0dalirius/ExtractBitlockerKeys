@@ -20,6 +20,7 @@
  - [x] Export results in XLSX with Computer FQDN, Domain, Recovery Key, Volume GUID, Created At and Organizational Units.
  - [x] Export results in SQLITE3 with Computer FQDN, Domain, Recovery Key, Volume GUID, Created At and Organizational Units.
 
+---
 
 ## Demonstration from Linux in Python
 
@@ -33,6 +34,8 @@ You will get the following output:
 
 ![](./.github/example_python.png)
 
+---
+
 ## Demonstration from Windows in Powershell
 
 To extract Bitlocker recovery keys from all the computers of the domain `domain.local` you can use this command:
@@ -45,6 +48,7 @@ You will get the following output:
 
 ![](./.github/example_powershell.png)
 
+---
 
 ## Usage
 
