@@ -1,7 +1,7 @@
 ![](.github/banner.png)
 
 <p align="center">
-    A post-exploitation python script to automatically extract the bitlocker recovery keys from a domain.
+    A system administration or post-exploitation script to automatically extract the bitlocker recovery keys from a domain.
     <br>
     <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/p0dalirius/ExtractBitlockerKeys">
     <a href="https://twitter.com/intent/follow?screen_name=podalirius_" title="Follow"><img src="https://img.shields.io/twitter/follow/podalirius_?label=Podalirius&style=social"></a>
