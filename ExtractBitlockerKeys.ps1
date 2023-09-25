@@ -44,11 +44,6 @@ If ($LogFile.Length -ne 0) {
     $Stream.Close()
 }
 
-if ($Delay) {
-    $DelayInSeconds = $Delay;
-} else {
-    $DelayInSeconds = 1;
-}
 
 
 Function Write-Logger {
