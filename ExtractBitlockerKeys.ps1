@@ -4,8 +4,8 @@
 
 Param (
     [parameter(Mandatory=$true)][string]$dcip = $null,
-    [parameter(Mandatory=$false)][string]$Username = $null,
-    [parameter(Mandatory=$false)][string]$Password = $null,
+    [parameter(Mandatory=$false,ParameterSetName="Credentials")][System.Management.Automation.PSCredential]$Credentials,
+    [parameter(Mandatory=$false,ParameterSetName="Credentials")][Switch]$UseCredentials,
     [parameter(Mandatory=$false)][string]$LogFile = $null,
     [parameter(Mandatory=$false)][switch]$Quiet,
     [parameter(Mandatory=$false)][string]$ExportToCSV = $null,
@@ -23,18 +23,18 @@ If ($Help) {
     Write-Host ""
 
     Write-Host "Required arguments:"
-    Write-Host "  -dcip         : LDAP host to target, most likely the domain controller."
+    Write-Host "  -dcip             : LDAP host to target, most likely the domain controller."
     Write-Host ""
     Write-Host "Optional arguments:"
-    Write-Host "  -Help         : Displays this help message"
-    Write-Host "  -Quiet        : Do not print keys, only export them."
-    Write-Host "  -Username     : User to authenticate as."
-    Write-Host "  -Password     : Password for authentication."
-    Write-Host "  -PageSize     : Sets the LDAP page size to use in queries (default: 5000)."
-    Write-Host "  -LDAPS        : Use LDAPS instead of LDAP."
-    Write-Host "  -LogFile      : Log file to save output to."
-    Write-Host "  -ExportToCSV  : Export Bitlocker Keys in a CSV file."
-    Write-Host "  -ExportToJSON : Export Bitlocker Keys in a JSON file."
+    Write-Host "  -Help             : Displays this help message"
+    Write-Host "  -Quiet            : Do not print keys, only export them."
+    Write-Host "  -UseCredentials   : Flag for asking for credentials to authentication"
+    Write-Host "  -Credentials      : Providing PSCredentialObject for authentication"
+    Write-Host "  -PageSize         : Sets the LDAP page size to use in queries (default: 5000)."
+    Write-Host "  -LDAPS            : Use LDAPS instead of LDAP."
+    Write-Host "  -LogFile          : Log file to save output to."
+    Write-Host "  -ExportToCSV      : Export Bitlocker Keys in a CSV file."
+    Write-Host "  -ExportToJSON     : Export Bitlocker Keys in a JSON file."
     exit 0
 }
 
@@ -42,6 +42,10 @@ If ($LogFile.Length -ne 0) {
     # Init log file
     $Stream = [System.IO.StreamWriter]::new($LogFile)
     $Stream.Close()
+}
+
+if($UseCredentials -and ([string]::IsNullOrEmpty($Credentials))){
+    $Credentials = Get-Credential
 }
 
 
@@ -149,14 +153,13 @@ Function Get-CreatedAtFromLDAPDN {
 }
 
 
-Function LDAP-Query {
+Function Invoke-LDAPQuery {
     [CmdletBinding()]
     [OutputType([Nullable])]
     Param
     (
         [Parameter(Mandatory=$true)] $connectionString,
-        [Parameter(Mandatory=$false)] $Username,
-        [Parameter(Mandatory=$false)] $Password,
+        [parameter(Mandatory=$false,ParameterSetName="Credentials")][System.Management.Automation.PSCredential] $Credentials,
         [Parameter(Mandatory=$false)] $PageSize
     )
     Begin
@@ -166,10 +169,10 @@ Function LDAP-Query {
         Write-Logger -Logfile $Logfile -Message "[+] Authentication successful!";
         Write-Logger -Logfile $Logfile -Message "[+] Targeting defaultNamingContext: $defaultNamingContext";
         $ldapSearcher = New-Object System.DirectoryServices.DirectorySearcher
-        if ($Username) {
+        if ($Credentials.UserName) {
             # Connect to Domain with credentials
             Write-Logger -Logfile $Logfile -Message ("[+] Connecting to {0}/{1} with specified account" -f $connectionString, $defaultNamingContext)
-            $ldapSearcher.SearchRoot = New-Object System.DirectoryServices.DirectoryEntry(("{0}/{1}" -f $connectionString, $defaultNamingContext), $Username, $Password)
+            $ldapSearcher.SearchRoot = New-Object System.DirectoryServices.DirectoryEntry(("{0}/{1}" -f $connectionString, $defaultNamingContext), $Credentials.UserName, $($Credentials.Password | ConvertFrom-Securestring -AsPlaintext))
         } else {
             # Connect to Domain with current session
             Write-Logger -Logfile $Logfile -Message ("[+] Connecting to {0}/{1} using current session" -f $connectionString, $defaultNamingContext)
@@ -236,7 +239,7 @@ Write-Verbose "Using connectionString: $connectionString"
 
 # Connect to LDAP
 try {
-    $bitlocker_keys = LDAP-Query -connectionString $connectionString -Username $Username -Password $Password -PageSize $PageSize
+    $bitlocker_keys = Invoke-LDAPQuery -connectionString $connectionString -Credentials $Credentials -PageSize $PageSize
 
     If (!($Quiet)) {
         Foreach ($entry in $bitlocker_keys) {
