@@ -198,23 +198,20 @@ Function LDAP-Query {
             }
         }
 
-        $bitlocker_keys = New-Object System.Collections.ArrayList
-        Foreach ($distinguishedName in $results.Keys) {
+        $bitlocker_keys = Foreach ($distinguishedName in $results.Keys) {
             Foreach ($recoveryKey in $results[$distinguishedName]["msFVE-RecoveryPassword"]) {
                 $domainName = (Get-DomainFromLDAPDN $distinguishedName)
                 $createdAt = (Get-CreatedAtFromLDAPDN $distinguishedName)
                 $volumeGuid = (Get-VolumeGuidFromLDAPDN $distinguishedName)
                 $computerName = (Get-ComputerNameFromLDAPDN $distinguishedName)
-                $bitlocker_keys.Add(
-                    [PSCustomObject]@{
-                        domainName = $domainName
-                        computerName = $computerName
-                        recoveryKey = $recoveryKey
-                        volumeGuid = $volumeGuid
-                        createdAt = $createdAt
-                        distinguishedName = $distinguishedName
-                    }
-                ) | Out-Null
+                [PSCustomObject]@{
+                    domainName = $domainName
+                    computerName = $computerName
+                    recoveryKey = $recoveryKey
+                    volumeGuid = $volumeGuid
+                    createdAt = $createdAt
+                    distinguishedName = $distinguishedName
+                }
             }
         }
         return $bitlocker_keys
