@@ -1,4 +1,4 @@
-![](.github/banner.png)
+![](./.github/banner.png)
 
 <p align="center">
     A system administration or post-exploitation script to automatically extract the bitlocker recovery keys from a domain.
