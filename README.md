@@ -41,7 +41,7 @@ You will get the following output:
 To extract Bitlocker recovery keys from all the computers of the domain `domain.local` you can use this command:
 
 ```
-.\ExtractBitlockerKeys.ps1 -dcip 192.168.1.101 -Username 'Administrator' -Password 'Podalirius123!' -ExportToCSV ./keys.csv -ExportToJSON ./keys.json
+.\ExtractBitlockerKeys.ps1 -dcip 192.168.1.101 -ExportToCSV ./keys.csv -ExportToJSON ./keys.json
 ```
 
 You will get the following output:
