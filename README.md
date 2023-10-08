@@ -92,7 +92,7 @@ Credentials:
 
 ## References
 
- - https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-keypackage
- - https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoveryguid
- - https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoverypassword
- - https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-volumeguid
+ - [https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-keypackage](https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-keypackage?wt.mc_id=SEC-MVP-5005286)
+ - [https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoveryguid](https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoveryguid?wt.mc_id=SEC-MVP-5005286)
+ - [https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoverypassword](https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoverypassword?wt.mc_id=SEC-MVP-5005286)
+ - [https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-volumeguid](https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-volumeguid?wt.mc_id=SEC-MVP-5005286)
