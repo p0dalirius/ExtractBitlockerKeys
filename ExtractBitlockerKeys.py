@@ -92,11 +92,11 @@ def export_sqlite(options, results):
     for computerfqdn in results.keys():
         cursor.execute("INSERT INTO shares VALUES (?, ?, ?, ?, ?, ?)", (
                 computerfqdn,
-                results[computerfqdn]["domain"],
-                results[computerfqdn]["recoveryKey"],
-                results[computerfqdn]["volumeGuid"],
-                results[computerfqdn]["createdAt"],
-                results[computerfqdn]["organizationalUnits"],
+                results[computerfqdn][0]["domain"],
+                results[computerfqdn][0]["recoveryKey"],
+                results[computerfqdn][0]["volumeGuid"],
+                results[computerfqdn][0]["createdAt"],
+                results[computerfqdn][0]["organizationalUnits"],
             )
         )
     conn.commit()
