@@ -15,7 +15,8 @@
  - [x] Multithreaded connections to extract Bitlocker keys from LDAP.
  - [x] Iterate on LDAP result pages to get every computer of the domain, no matter the size.
 
-⚠️ Please do not store this backup in an online SMB share of the domain. You should prefer to print it and store it physically in a locked safe.
+> [!WARNING]
+> Please do not store this backup in an online SMB share of the domain. You should prefer to print it and store it physically in a locked safe.
  - [x] Export results in JSON with Computer FQDN, Domain, Recovery Key, Volume GUID, Created At and Organizational Units.
  - [x] Export results in XLSX with Computer FQDN, Domain, Recovery Key, Volume GUID, Created At and Organizational Units.
  - [x] Export results in SQLITE3 with Computer FQDN, Domain, Recovery Key, Volume GUID, Created At and Organizational Units.
