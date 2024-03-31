@@ -91,6 +91,10 @@ Credentials:
   -k, --kerberos        Use Kerberos authentication. Grabs credentials from .ccache file (KRB5CCNAME) based on target parameters. If valid credentials cannot be found, it will use the ones specified in the command line.
 ```
 
+## Contributing
+
+Pull requests are welcome. Feel free to open an issue if you want to add other features.
+
 ## References
 
  - [https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-keypackage](https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-keypackage?wt.mc_id=SEC-MVP-5005286)
