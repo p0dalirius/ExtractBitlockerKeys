@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/go-ldap/ldap/v3"
+	"github.com/xuri/excelize/v2"
 )
 
 func banner() {
@@ -171,6 +172,7 @@ var (
 	authHashes   string
 	// authKey        string
 	// useKerberos    bool
+	xlsx         string
 )
 
 func parseArgs() {
@@ -189,6 +191,8 @@ func parseArgs() {
 	//flag.StringVar(&authKey, "aes-key", "", "AES key to use for Kerberos Authentication (128 or 256 bits)")
 	//flag.BoolVar(&useKerberos, "k", false, "Use Kerberos authentication. Grabs credentials from .ccache file (KRB5CCNAME) based on target parameters. If valid credentials cannot be found, it will use the ones specified in the command line")
 
+	flag.StringVar(&xlsx, "xlsx", "", "Output results in a XLSX Excel file.")
+
 	flag.Parse()
 
 	if ldapHost == "" {
@@ -204,7 +208,6 @@ func parseArgs() {
 			ldapPort = 389
 		}
 	}
-
 }
 
 func main() {
@@ -250,10 +253,10 @@ func main() {
 		"(objectClass=msFVE-RecoveryInformation)",
 		// Attributes to retrieve
 		[]string{
-			"msFVE-KeyPackage",  // https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-keypackage
-			"msFVE-RecoveryGuid",  // https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoveryguid
+			"msFVE-KeyPackage",        // https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-keypackage
+			"msFVE-RecoveryGuid",      // https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoveryguid
 			"msFVE-RecoveryPassword",  // https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoverypassword
-			"msFVE-VolumeGuid",  // https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-volumeguid
+			"msFVE-VolumeGuid",        // https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-volumeguid
 			"distinguishedName",
 		},
 		// Controls
@@ -272,8 +275,36 @@ func main() {
 	var resultsList []map[string]string
 	for _, entry := range searchResult.Entries {
 		result := parseFVE(entry.GetAttributeValue("distinguishedName"), entry)
-		fmt.Printf("| %-20s | %-20s | %s |\n", result["domain"], result["computerName"], result["recoveryKey"])
 		resultsList = append(resultsList, result)
+	}
+	fmt.Printf("[+] Total BitLocker recovery keys found: %d\n", len(resultsList))
+	
+	// Export BitLocker Recovery Keys to an Excel
+	if xlsx != "" {
+		f := excelize.NewFile()
+		// Create a new sheet.
+		index, err := f.NewSheet("Sheet1")
+		// Set value of a cell.
+		f.SetCellValue("Sheet1", "A1", "Domain")
+		f.SetCellValue("Sheet1", "B1", "Computer Name")
+		f.SetCellValue("Sheet1", "C1", "BitLocker Recovery Key")
+		for i, result := range resultsList {
+			f.SetCellValue("Sheet1", fmt.Sprintf("A%d", i+2), result["domain"])
+			f.SetCellValue("Sheet1", fmt.Sprintf("B%d", i+2), result["computerName"])
+			f.SetCellValue("Sheet1", fmt.Sprintf("C%d", i+2), result["recoveryKey"])
+		}
+		// Set active sheet of the workbook.
+		f.SetActiveSheet(index)
+		// Save xlsx file by the given path.
+		if err := f.SaveAs(xlsx); err != nil {
+			fmt.Println(err)
+		}
+		fmt.Printf("[+] Exported BitLocker recovery keys to: %s\n", xlsx)
+	} else {
+		// Print the keys in the console
+		for _, result := range resultsList {
+			fmt.Printf("| %-20s | %-20s | %s |\n", result["domain"], result["computerName"], result["recoveryKey"])
+		}
 	}
 
 	fmt.Println("[+] All done!")
