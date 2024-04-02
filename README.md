@@ -15,7 +15,8 @@
  - [x] Multithreaded connections to extract Bitlocker keys from LDAP.
  - [x] Iterate on LDAP result pages to get every computer of the domain, no matter the size.
 
-⚠️ Please do not store this backup in an online SMB share of the domain. You should prefer to print it and store it physically in a locked safe.
+> [!WARNING]
+> Please do not store this backup in an online SMB share of the domain. You should prefer to print it and store it physically in a locked safe.
  - [x] Export results in JSON with Computer FQDN, Domain, Recovery Key, Volume GUID, Created At and Organizational Units.
  - [x] Export results in XLSX with Computer FQDN, Domain, Recovery Key, Volume GUID, Created At and Organizational Units.
  - [x] Export results in SQLITE3 with Computer FQDN, Domain, Recovery Key, Volume GUID, Created At and Organizational Units.
@@ -41,7 +42,7 @@ You will get the following output:
 To extract Bitlocker recovery keys from all the computers of the domain `domain.local` you can use this command:
 
 ```
-.\ExtractBitlockerKeys.ps1 -dcip 192.168.1.101 -Username 'Administrator' -Password 'Podalirius123!' -ExportToCSV ./keys.csv -ExportToJSON ./keys.json
+.\ExtractBitlockerKeys.ps1 -dcip 192.168.1.101 -ExportToCSV ./keys.csv -ExportToJSON ./keys.json
 ```
 
 You will get the following output:
@@ -90,9 +91,13 @@ Credentials:
   -k, --kerberos        Use Kerberos authentication. Grabs credentials from .ccache file (KRB5CCNAME) based on target parameters. If valid credentials cannot be found, it will use the ones specified in the command line.
 ```
 
+## Contributing
+
+Pull requests are welcome. Feel free to open an issue if you want to add other features.
+
 ## References
 
- - https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-keypackage
- - https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoveryguid
- - https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoverypassword
- - https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-volumeguid
+ - [https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-keypackage](https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-keypackage?wt.mc_id=SEC-MVP-5005286)
+ - [https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoveryguid](https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoveryguid?wt.mc_id=SEC-MVP-5005286)
+ - [https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoverypassword](https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoverypassword?wt.mc_id=SEC-MVP-5005286)
+ - [https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-volumeguid](https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-volumeguid?wt.mc_id=SEC-MVP-5005286)

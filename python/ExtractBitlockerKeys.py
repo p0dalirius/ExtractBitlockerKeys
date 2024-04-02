@@ -92,11 +92,11 @@ def export_sqlite(options, results):
     for computerfqdn in results.keys():
         cursor.execute("INSERT INTO shares VALUES (?, ?, ?, ?, ?, ?)", (
                 computerfqdn,
-                results[computerfqdn]["domain"],
-                results[computerfqdn]["recoveryKey"],
-                results[computerfqdn]["volumeGuid"],
-                results[computerfqdn]["createdAt"],
-                results[computerfqdn]["organizationalUnits"],
+                results[computerfqdn][0]["domain"],
+                results[computerfqdn][0]["recoveryKey"],
+                results[computerfqdn][0]["volumeGuid"],
+                results[computerfqdn][0]["createdAt"],
+                results[computerfqdn][0]["organizationalUnits"],
             )
         )
     conn.commit()
@@ -181,6 +181,7 @@ def parseArgs():
 
     authconn = parser.add_argument_group('Authentication & connection')
     authconn.add_argument('--dc-ip', required=True, action='store', metavar="ip address", help='IP Address of the domain controller or KDC (Key Distribution Center) for Kerberos. If omitted it will use the domain part (FQDN) specified in the identity parameter')
+    authconn.add_argument('--kdcHost', dest="kdcHost", action='store', metavar="FQDN KDC", help='FQDN of KDC for Kerberos.')
     authconn.add_argument("-d", "--domain", dest="auth_domain", metavar="DOMAIN", action="store", default="", help="(FQDN) domain to authenticate to")
     authconn.add_argument("-u", "--user", dest="auth_username", metavar="USER", action="store", default="", help="user to authenticate with")
 
@@ -202,6 +203,13 @@ if __name__ == '__main__':
             options.auth_hashes = ":" + options.auth_hashes
     auth_lm_hash, auth_nt_hash = parse_lm_nt_hashes(options.auth_hashes)
 
+    if options.auth_key is not None:
+        options.use_kerberos = True
+    
+    if options.use_kerberos is True and options.kdcHost is None:
+        print("[!] Specify KDC's Hostname of FQDN using the argument --kdcHost")
+        exit()
+    
     if not options.quiet:
         print("[>] Extracting BitLocker recovery keys of all computers ...")
 
@@ -211,13 +219,16 @@ if __name__ == '__main__':
         auth_username=options.auth_username,
         auth_password=options.auth_password,
         auth_hashes=options.auth_hashes,
+        auth_key=options.auth_key,
         query="(objectClass=msFVE-RecoveryInformation)",
         attributes=[
             "msFVE-KeyPackage",  # https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-keypackage
             "msFVE-RecoveryGuid",  # https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoveryguid
             "msFVE-RecoveryPassword",  # https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoverypassword
             "msFVE-VolumeGuid"  # https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-volumeguid
-        ]
+        ],
+        use_kerberos=options.use_kerberos,
+        kdcHost=options.kdcHost
     )
 
     if not options.quiet:
@@ -246,7 +257,7 @@ if __name__ == '__main__':
         if options.export_sqlite is not None:
             export_sqlite(options, results)
     else:
-        print("[!] No computers in the domain found matching filter '%s'" % options.ldap_query)
+        print("[!] No computers in the domain found matching filter (objectClass=msFVE-RecoveryInformation)")
 
 
     print("[+] Bye Bye!")
