@@ -12,7 +12,7 @@ import (
 )
 
 func banner() {
-	fmt.Println("ExtractBitlockerKeys v%s - by @podalirius_\n", "1.3")
+	fmt.Printf("ExtractBitlockerKeys v%s - by @podalirius_\n", "1.3")
 	fmt.Println("")
 }
 
@@ -251,9 +251,10 @@ func main() {
 		// Attributes to retrieve
 		[]string{
 			"msFVE-KeyPackage",  // https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-keypackage
-            "msFVE-RecoveryGuid",  // https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoveryguid
-            "msFVE-RecoveryPassword",  // https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoverypassword
-            "msFVE-VolumeGuid",  // https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-volumeguid
+			"msFVE-RecoveryGuid",  // https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoveryguid
+			"msFVE-RecoveryPassword",  // https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-recoverypassword
+			"msFVE-VolumeGuid",  // https://learn.microsoft.com/en-us/windows/win32/adschema/a-msfve-volumeguid
+			"distinguishedName",
 		},
 		// Controls
 		nil,
@@ -266,11 +267,13 @@ func main() {
 		fmt.Println("[!] Error searching LDAP:", err)
 		return
 	}
-
+	
 	// Print search results
+	var resultsList []map[string]string
 	for _, entry := range searchResult.Entries {
 		result := parseFVE(entry.GetAttributeValue("distinguishedName"), entry)
-		fmt.Println("| %-20s | %-20s | %s |", result["domain"], result["computerName"], result["recoveryKey"])
+		fmt.Printf("| %-20s | %-20s | %s |\n", result["domain"], result["computerName"], result["recoveryKey"])
+		resultsList = append(resultsList, result)
 	}
 
 	fmt.Println("[+] All done!")
