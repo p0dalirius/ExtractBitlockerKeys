@@ -55,7 +55,7 @@ You will get the following output:
 
 ```
 $ ./ExtractBitlockerKeys.py -h
-ExtractBitlockerKeys.py v1.1 - by @podalirius_
+ExtractBitlockerKeys.py v1.1 - by Remi GASCOU (Podalirius)
 
 usage: ExtractBitlockerKeys.py [-h] [-v] [-q] [-t THREADS] [--export-xlsx EXPORT_XLSX] [--export-json EXPORT_JSON] [--export-sqlite EXPORT_SQLITE] --dc-ip ip address [-d DOMAIN] [-u USER]
                                [--no-pass | -p PASSWORD | -H [LMHASH:]NTHASH | --aes-key hex key] [-k]

@@ -166,7 +166,7 @@ def parse_fve(distinguishedName, bitlocker_keys):
 
 
 def parseArgs():
-    print("ExtractBitlockerKeys.py v%s - by @podalirius_\n" % VERSION)
+    print("ExtractBitlockerKeys.py v%s - by Remi GASCOU (Podalirius)\n" % VERSION)
 
     parser = argparse.ArgumentParser(description="")
 

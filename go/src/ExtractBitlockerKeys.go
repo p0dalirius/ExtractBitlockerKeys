@@ -13,7 +13,7 @@ import (
 )
 
 func banner() {
-	fmt.Printf("ExtractBitlockerKeys v%s - by @podalirius_\n", "1.3")
+	fmt.Printf("ExtractBitlockerKeys v%s - by Remi GASCOU (Podalirius)\n", "1.3")
 	fmt.Println("")
 }
 
