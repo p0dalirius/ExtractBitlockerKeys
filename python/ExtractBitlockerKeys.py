@@ -6,7 +6,7 @@
 
 
 import argparse
-from sectools.windows.ldap import raw_ldap_query, init_ldap_session
+from sectools.windows.ldap.ldap import raw_ldap_query, init_ldap_session
 from sectools.windows.crypto import nt_hash, parse_lm_nt_hashes
 import os
 import sys
@@ -205,11 +205,11 @@ if __name__ == '__main__':
 
     if options.auth_key is not None:
         options.use_kerberos = True
-    
+
     if options.use_kerberos is True and options.kdcHost is None:
         print("[!] Specify KDC's Hostname of FQDN using the argument --kdcHost")
         exit()
-    
+
     if not options.quiet:
         print("[>] Extracting BitLocker recovery keys of all computers ...")
 
